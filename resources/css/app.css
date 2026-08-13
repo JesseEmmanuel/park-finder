@@ -1,0 +1,444 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "shadcn/tailwind.css";
+@import 'maplibre-gl/dist/maplibre-gl.css';
+@import 'tailwindcss';
+
+/*
+|--------------------------------------------------------------------------
+| ParkHero Design Tokens
+|--------------------------------------------------------------------------
+*/
+
+:root {
+    /* ==============================
+       Core Surfaces
+       ============================== */
+
+    --surface: #f8f9ff;
+    --surface-dim: #d0dbed;
+    --surface-bright: #f8f9ff;
+
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #eff4ff;
+    --surface-container: #e6eeff;
+    --surface-container-high: #dee9fc;
+    --surface-container-highest: #d9e3f6;
+
+    --on-surface: #121c2a;
+    --on-surface-variant: #444651;
+
+    --background: #f8f9ff;
+    --on-background: #121c2a;
+
+    --surface-variant: #d9e3f6;
+
+    /* ==============================
+       Primary / Navy
+       ============================== */
+
+    --primary: #00236f;
+    --on-primary: #ffffff;
+
+    --primary-container: #1e3a8a;
+    --on-primary-container: #90a8ff;
+
+    --primary-fixed: #dce1ff;
+    --primary-fixed-dim: #b6c4ff;
+
+    --on-primary-fixed: #00164e;
+    --on-primary-fixed-variant: #264191;
+
+    /* ==============================
+       Secondary / Parking Blue
+       ============================== */
+
+    --secondary: #0058be;
+    --on-secondary: #ffffff;
+
+    --secondary-container: #2170e4;
+    --on-secondary-container: #fefcff;
+
+    --secondary-fixed: #d8e2ff;
+    --secondary-fixed-dim: #adc6ff;
+
+    --on-secondary-fixed: #001a42;
+    --on-secondary-fixed-variant: #004395;
+
+    /* ==============================
+       Tertiary / Amber
+       ============================== */
+
+    --tertiary: #3e2400;
+    --on-tertiary: #ffffff;
+
+    --tertiary-container: #5c3800;
+    --on-tertiary-container: #ef9900;
+
+    --tertiary-fixed: #ffddb8;
+    --tertiary-fixed-dim: #ffb95f;
+
+    --on-tertiary-fixed: #2a1700;
+    --on-tertiary-fixed-variant: #653e00;
+
+    /* ==============================
+       Error
+       ============================== */
+
+    --error: #ba1a1a;
+    --on-error: #ffffff;
+
+    --error-container: #ffdad6;
+    --on-error-container: #93000a;
+
+    /* ==============================
+       Borders / Neutral
+       ============================== */
+
+    --outline: #757682;
+    --outline-variant: #c5c5d3;
+
+    --inverse-surface: #27313f;
+    --inverse-on-surface: #eaf1ff;
+    --inverse-primary: #b6c4ff;
+
+    --surface-tint: #4059aa;
+
+    /* ==============================
+       Product-specific Colors
+       ============================== */
+
+    --parking-blue: #3b82f6;
+    --parking-blue-light: #dbeafe;
+
+    --parking-navy: #1e3a8a;
+
+    --parking-amber: #f59e0b;
+    --parking-amber-light: #fef3c7;
+
+    --parking-reported-text: #1e3a8a;
+
+    --parking-historical-bg: #e5e7eb;
+    --parking-historical-text: #475569;
+
+    /* ==============================
+       Radius
+       ============================== */
+
+    --radius-sm: 0.25rem;
+    --radius: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-full: 9999px;
+
+    /* ==============================
+       Spacing
+       ============================== */
+
+    --spacing-base: 8px;
+    --spacing-gutter: 16px;
+
+    --spacing-margin-mobile: 16px;
+    --spacing-margin-tablet: 24px;
+
+    --touch-target-min: 48px;
+
+    /* ==============================
+       Shadows
+       ============================== */
+
+    --shadow-floating:
+        0 4px 8px rgb(0 35 111 / 15%);
+
+    --shadow-card:
+        0 2px 8px rgb(18 28 42 / 8%);
+
+    --shadow-search:
+        0 12px 24px rgb(18 28 42 / 12%);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Dark Mode
+|--------------------------------------------------------------------------
+*/
+
+.dark {
+    --surface: #0f172a;
+    --surface-dim: #0b1120;
+    --surface-bright: #172033;
+
+    --surface-container-lowest: #0a0f1c;
+    --surface-container-low: #101827;
+    --surface-container: #151f31;
+    --surface-container-high: #1b2638;
+    --surface-container-highest: #202c3f;
+
+    --on-surface: #eaf1ff;
+    --on-surface-variant: #c5cad6;
+
+    --background: #0f172a;
+    --on-background: #eaf1ff;
+
+    --surface-variant: #273449;
+
+    --primary: #90a8ff;
+    --on-primary: #00164e;
+
+    --primary-container: #1e3a8a;
+    --on-primary-container: #dce1ff;
+
+    --secondary: #7eaef8;
+    --on-secondary: #001a42;
+
+    --secondary-container: #174f9f;
+    --on-secondary-container: #fefcff;
+
+    --tertiary: #ffb95f;
+    --on-tertiary: #2a1700;
+
+    --tertiary-container: #5c3800;
+    --on-tertiary-container: #ffddb8;
+
+    --outline: #9096a3;
+    --outline-variant: #414858;
+
+    --inverse-surface: #eaf1ff;
+    --inverse-on-surface: #27313f;
+    --inverse-primary: #4059aa;
+
+    --parking-blue: #60a5fa;
+    --parking-blue-light: #1e3a5f;
+
+    --parking-navy: #93c5fd;
+
+    --parking-amber: #fbbf24;
+    --parking-amber-light: #4b3a10;
+
+    --parking-reported-text: #bfdbfe;
+
+    --parking-historical-bg: #334155;
+    --parking-historical-text: #cbd5e1;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Tailwind Theme Mapping
+|--------------------------------------------------------------------------
+|
+| These variables become usable as Tailwind utilities:
+|
+| bg-primary
+| text-on-surface
+| border-outline-variant
+| bg-parking-blue
+| rounded-md
+|
+*/
+
+@theme {
+    /* Surfaces */
+    --color-surface: var(--surface);
+    --color-surface-dim: var(--surface-dim);
+    --color-surface-bright: var(--surface-bright);
+
+    --color-surface-container-lowest: var(--surface-container-lowest);
+    --color-surface-container-low: var(--surface-container-low);
+    --color-surface-container: var(--surface-container);
+    --color-surface-container-high: var(--surface-container-high);
+    --color-surface-container-highest: var(--surface-container-highest);
+
+    --color-on-surface: var(--on-surface);
+    --color-on-surface-variant: var(--on-surface-variant);
+
+    --color-background: var(--background);
+    --color-on-background: var(--on-background);
+
+    --color-surface-variant: var(--surface-variant);
+
+    /* Primary */
+    --color-primary: var(--primary);
+    --color-on-primary: var(--on-primary);
+    --color-primary-container: var(--primary-container);
+    --color-on-primary-container: var(--on-primary-container);
+
+    --color-primary-fixed: var(--primary-fixed);
+    --color-primary-fixed-dim: var(--primary-fixed-dim);
+
+    --color-on-primary-fixed: var(--on-primary-fixed);
+    --color-on-primary-fixed-variant: var(--on-primary-fixed-variant);
+
+    /* Secondary */
+    --color-secondary: var(--secondary);
+    --color-on-secondary: var(--on-secondary);
+
+    --color-secondary-container: var(--secondary-container);
+    --color-on-secondary-container: var(--on-secondary-container);
+
+    --color-secondary-fixed: var(--secondary-fixed);
+    --color-secondary-fixed-dim: var(--secondary-fixed-dim);
+
+    --color-on-secondary-fixed: var(--on-secondary-fixed);
+    --color-on-secondary-fixed-variant: var(--on-secondary-fixed-variant);
+
+    /* Tertiary */
+    --color-tertiary: var(--tertiary);
+    --color-on-tertiary: var(--on-tertiary);
+
+    --color-tertiary-container: var(--tertiary-container);
+    --color-on-tertiary-container: var(--on-tertiary-container);
+
+    --color-tertiary-fixed: var(--tertiary-fixed);
+    --color-tertiary-fixed-dim: var(--tertiary-fixed-dim);
+
+    --color-on-tertiary-fixed: var(--on-tertiary-fixed);
+    --color-on-tertiary-fixed-variant: var(--on-tertiary-fixed-variant);
+
+    /* Feedback */
+    --color-error: var(--error);
+    --color-on-error: var(--on-error);
+
+    --color-error-container: var(--error-container);
+    --color-on-error-container: var(--on-error-container);
+
+    /* Neutral */
+    --color-outline: var(--outline);
+    --color-outline-variant: var(--outline-variant);
+
+    --color-inverse-surface: var(--inverse-surface);
+    --color-inverse-on-surface: var(--inverse-on-surface);
+    --color-inverse-primary: var(--inverse-primary);
+
+    --color-surface-tint: var(--surface-tint);
+
+    /* Parking */
+    --color-parking-blue: var(--parking-blue);
+    --color-parking-blue-light: var(--parking-blue-light);
+
+    --color-parking-navy: var(--parking-navy);
+
+    --color-parking-amber: var(--parking-amber);
+    --color-parking-amber-light: var(--parking-amber-light);
+
+    --color-parking-reported-text: var(--parking-reported-text);
+
+    --color-parking-historical-bg: var(--parking-historical-bg);
+    --color-parking-historical-text: var(--parking-historical-text);
+
+    /* Radius */
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Global Base
+|--------------------------------------------------------------------------
+*/
+
+@layer base {
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        font-family: 'Inter', sans-serif;
+        background: var(--background);
+        color: var(--on-background);
+    }
+
+    body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--background);
+        color: var(--on-background);
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 24px;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+        font: inherit;
+    }
+
+    button {
+        min-height: 48px;
+    }
+
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--secondary);
+        outline-offset: 2px;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Typography Utilities
+|--------------------------------------------------------------------------
+*/
+
+@utility text-headline-lg {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: -0.01em;
+    }
+}
+
+@utility text-headline-md {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+@utility text-body-lg {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+@utility text-body-md {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+@utility text-label-bold {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+@utility text-label-sm {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+}
