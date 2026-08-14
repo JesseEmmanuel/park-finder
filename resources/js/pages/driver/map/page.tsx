@@ -1,12 +1,12 @@
 import { router } from '@inertiajs/react';
-import { ArrowLeft, HomeIcon, List } from 'lucide-react';
+import { HomeIcon, List } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import ParkingMap from '@/components/map/parking-map';
 import SearchLocation from '@/components/map/search-location';
-import ParkingSheet from './components/parking-sheet';
+import { Button } from '@/components/ui/button';
 import { mockParkingLots } from '@/data/mock-parking';
+import ParkingSheet from './components/parking-sheet';
 
 export default function Page() {
   const [sheetOpen, setSheetOpen] = useState(false);

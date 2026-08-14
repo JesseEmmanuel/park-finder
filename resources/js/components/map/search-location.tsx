@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
+import { ArrowRight, MapPin } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
     InputGroup,
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
-import { ArrowRight, MapPin } from 'lucide-react';
 import {
-    autocompleteLocation,
-    type GeoapifyLocation,
+    autocompleteLocation
+
 } from '@/lib/geoapify';
+import type { GeoapifyLocation } from '@/lib/geoapify';
 
 export default function SearchLocation() {
     const [query, setQuery] = useState('');
@@ -28,8 +29,6 @@ export default function SearchLocation() {
         }
 
         if (trimmedQuery.length < 2) {
-            setSuggestions([]);
-            setIsLoading(false);
             return;
         }
 

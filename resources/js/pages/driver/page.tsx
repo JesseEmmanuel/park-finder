@@ -1,5 +1,5 @@
-import Header from './components/header'
 import SearchLocation from '@/components/map/search-location';
+import Header from './components/header'
 
 export default function Page() {
     return (

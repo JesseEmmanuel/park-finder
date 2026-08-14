@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { circle } from '@turf/circle';
 import {
     Map,
     Marker,
     NavigationControl,
-    setWorkerUrl,
-    type MapOptions,
-    type GeoJSONSource
+    setWorkerUrl
+
+
 } from 'maplibre-gl';
-import { circle } from '@turf/circle';
+import type { MapOptions, GeoJSONSource } from 'maplibre-gl';
 
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+import { useEffect, useRef } from 'react';
 
 setWorkerUrl(workerUrl);
 
@@ -45,6 +46,7 @@ export default function ParkingMap({
             console.error(
                 'VITE_GEOAPIFY_API_KEY is not defined.'
             );
+
             return;
         }
 
@@ -123,7 +125,7 @@ export default function ParkingMap({
             map.remove();
             mapRef.current = null;
         };
-    }, []);
+    }, [center, radius, zoom]);
 
     /*
      * Update radius when the selected radius changes

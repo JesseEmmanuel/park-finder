@@ -1,3 +1,4 @@
+import { MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,
@@ -6,8 +7,7 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
-import { MockParkingLot } from '@/data/mock-parking';
-import { MapPin } from 'lucide-react';
+import type { MockParkingLot } from '@/data/mock-parking';
 
 
 interface ParkingSheetProps {
