@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/sheet';
 import type { MockParkingLot } from '@/data/mock-parking';
 
-
 interface ParkingSheetProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -43,7 +42,7 @@ export default function ParkingSheet({
                 className="rounded-t-xl border-t border-outline-variant bg-surface-container-lowest p-0 text-on-surface shadow-2xl"
             >
                 <div className="mx-auto w-full max-w-3xl">
-                    <SheetHeader className="relative px-4 pb-2 pt-5">
+                    <SheetHeader className="relative px-4 pt-5 pb-2">
                         <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-outline-variant" />
 
                         <SheetTitle className="text-headline-md text-primary">
@@ -55,7 +54,7 @@ export default function ParkingSheet({
                                 type="button"
                                 variant="ghost"
                                 size="icon"
-                                className="absolute right-3 top-3 size-10 rounded-full text-on-surface-variant hover:bg-surface-container"
+                                className="absolute top-3 right-3 size-10 rounded-full text-on-surface-variant hover:bg-surface-container"
                             >
                                 <span className="sr-only">
                                     Close parking results
@@ -68,17 +67,14 @@ export default function ParkingSheet({
                         {/* Radius selector */}
                         <div className="grid grid-cols-4 gap-2">
                             {radiusOptions.map((option) => {
-                                const selected =
-                                    radius === option.value;
+                                const selected = radius === option.value;
 
                                 return (
                                     <Button
                                         key={option.value}
                                         type="button"
                                         variant={
-                                            selected
-                                                ? 'default'
-                                                : 'outline'
+                                            selected ? 'default' : 'outline'
                                         }
                                         onClick={() =>
                                             onRadiusChange(option.value)
@@ -116,69 +112,58 @@ export default function ParkingSheet({
 
                             <div className="space-y-3">
                                 {filteredParkingLots.length > 0 ? (
-                                    filteredParkingLots.map(
-                                        (parkingLot) => (
-                                            <button
-                                                key={parkingLot.id}
-                                                type="button"
-                                                className="w-full rounded-md border border-outline-variant bg-surface-container-lowest p-4 text-left transition-colors hover:bg-surface-container focus-visible:bg-surface-container"
-                                            >
-                                                <div className="flex items-start justify-between gap-4">
-                                                    <div className="min-w-0">
-                                                        <h3 className="text-body-lg font-semibold text-on-surface">
-                                                            {
-                                                                parkingLot.name
-                                                            }
-                                                        </h3>
+                                    filteredParkingLots.map((parkingLot) => (
+                                        <button
+                                            key={parkingLot.id}
+                                            type="button"
+                                            className="w-full rounded-md border border-outline-variant bg-surface-container-lowest p-4 text-left transition-colors hover:bg-surface-container focus-visible:bg-surface-container"
+                                        >
+                                            <div className="flex items-start justify-between gap-4">
+                                                <div className="min-w-0">
+                                                    <h3 className="text-body-lg font-semibold text-on-surface">
+                                                        {parkingLot.name}
+                                                    </h3>
 
-                                                        <p className="mt-1 text-body-md text-on-surface-variant">
-                                                            {
-                                                                parkingLot.address
-                                                            }
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="shrink-0 text-right">
-                                                        <p className="text-label-bold text-primary">
-                                                            {
-                                                                parkingLot.distance
-                                                            }
-                                                            m
-                                                        </p>
-
-                                                        <p className="mt-1 text-label-sm text-on-surface-variant">
-                                                            {
-                                                                parkingLot.price
-                                                            }
-                                                        </p>
-                                                    </div>
+                                                    <p className="mt-1 text-body-md text-on-surface-variant">
+                                                        {parkingLot.address}
+                                                    </p>
                                                 </div>
 
-                                                <div className="mt-3 flex items-center gap-2">
-                                                    <MapPin className="size-4 text-secondary" />
+                                                <div className="shrink-0 text-right">
+                                                    <p className="text-label-bold text-primary">
+                                                        {parkingLot.distance}m
+                                                    </p>
 
-                                                    <span
-                                                        className={
-                                                            parkingLot.status ===
-                                                                'recent'
-                                                                ? 'rounded-full bg-parking-blue-light px-2.5 py-1 text-label-sm text-parking-reported-text'
-                                                                : 'rounded-full bg-parking-historical-bg px-2.5 py-1 text-label-sm text-parking-historical-text'
-                                                        }
-                                                    >
-                                                        {parkingLot.status ===
-                                                            'recent'
-                                                            ? 'Recently Reported'
-                                                            : 'Historical Spot'}
-                                                    </span>
+                                                    <p className="mt-1 text-label-sm text-on-surface-variant">
+                                                        {parkingLot.price}
+                                                    </p>
                                                 </div>
-                                            </button>
-                                        )
-                                    )
+                                            </div>
+
+                                            <div className="mt-3 flex items-center gap-2">
+                                                <MapPin className="size-4 text-secondary" />
+
+                                                <span
+                                                    className={
+                                                        parkingLot.status ===
+                                                        'recent'
+                                                            ? 'rounded-full bg-parking-blue-light px-2.5 py-1 text-label-sm text-parking-reported-text'
+                                                            : 'rounded-full bg-parking-historical-bg px-2.5 py-1 text-label-sm text-parking-historical-text'
+                                                    }
+                                                >
+                                                    {parkingLot.status ===
+                                                    'recent'
+                                                        ? 'Recently Reported'
+                                                        : 'Historical Spot'}
+                                                </span>
+                                            </div>
+                                        </button>
+                                    ))
                                 ) : (
                                     <div className="py-10 text-center">
                                         <p className="text-body-md text-on-surface-variant">
-                                            No parking locations found
-                                            within this radius.
+                                            No parking locations found within
+                                            this radius.
                                         </p>
                                     </div>
                                 )}

@@ -1,12 +1,5 @@
 import { circle } from '@turf/circle';
-import {
-    Map,
-    Marker,
-    NavigationControl,
-    setWorkerUrl
-
-
-} from 'maplibre-gl';
+import { Map, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import type { MapOptions, GeoJSONSource } from 'maplibre-gl';
 
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
@@ -26,7 +19,7 @@ const RADIUS_FILL_ID = 'search-radius-fill';
 const RADIUS_LINE_ID = 'search-radius-line';
 
 export default function ParkingMap({
-    center = [121.7740, 12.8797],
+    center = [121.774, 12.8797],
     zoom = 5,
     radius = 500,
     className = '',
@@ -43,9 +36,7 @@ export default function ParkingMap({
         const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
         if (!apiKey) {
-            console.error(
-                'VITE_GEOAPIFY_API_KEY is not defined.'
-            );
+            console.error('VITE_GEOAPIFY_API_KEY is not defined.');
 
             return;
         }
@@ -60,10 +51,7 @@ export default function ParkingMap({
 
         const map = new Map(mapOptions);
 
-        map.addControl(
-            new NavigationControl(),
-            'bottom-right'
-        );
+        map.addControl(new NavigationControl(), 'bottom-right');
 
         map.on('load', () => {
             /*
@@ -138,9 +126,7 @@ export default function ParkingMap({
         }
 
         const updateRadius = () => {
-            const source = map.getSource(
-                RADIUS_SOURCE_ID
-            );
+            const source = map.getSource(RADIUS_SOURCE_ID);
 
             if (!source) {
                 return;
@@ -162,9 +148,6 @@ export default function ParkingMap({
     }, [center, radius]);
 
     return (
-        <div
-            ref={mapContainerRef}
-            className={`h-full w-full ${className}`}
-        />
+        <div ref={mapContainerRef} className={`h-full w-full ${className}`} />
     );
 }

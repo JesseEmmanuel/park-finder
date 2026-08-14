@@ -7,10 +7,7 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
-import {
-    autocompleteLocation
-
-} from '@/lib/geoapify';
+import { autocompleteLocation } from '@/lib/geoapify';
 import type { GeoapifyLocation } from '@/lib/geoapify';
 
 export default function SearchLocation() {
@@ -36,15 +33,11 @@ export default function SearchLocation() {
             try {
                 setIsLoading(true);
 
-                const results =
-                    await autocompleteLocation(trimmedQuery);
+                const results = await autocompleteLocation(trimmedQuery);
 
                 setSuggestions(results);
             } catch (error) {
-                console.error(
-                    'Location autocomplete failed:',
-                    error
-                );
+                console.error('Location autocomplete failed:', error);
 
                 setSuggestions([]);
             } finally {
@@ -65,7 +58,7 @@ export default function SearchLocation() {
         setIsFocused(false);
 
         router.visit(
-            `/driver/map?lat=${location.lat}&lon=${location.lon}&zoom=14`
+            `/driver/map?lat=${location.lat}&lon=${location.lon}&zoom=14`,
         );
     };
 
@@ -78,7 +71,7 @@ export default function SearchLocation() {
     };
 
     return (
-        <div className="relative max-w-2xl w-full">
+        <div className="relative w-full max-w-2xl">
             <div className="flex w-full flex-col gap-2 rounded-md bg-white p-2 shadow-md">
                 <div className="flex gap-2 lg:flex-row">
                     <InputGroup>
@@ -115,7 +108,7 @@ export default function SearchLocation() {
                     <Button
                         type="button"
                         onClick={handleSearch}
-                        className="rounded-md text-white w-[75px]"
+                        className="w-[75px] rounded-md text-white"
                         disabled={isLoading}
                     >
                         <ArrowRight className="text-white" />
@@ -124,7 +117,7 @@ export default function SearchLocation() {
             </div>
 
             {isFocused && suggestions.length > 0 && (
-                <div className="absolute left-0 right-0 top-15 z-50 mt-2 overflow-hidden rounded-md border border-outline-variant bg-surface-container-lowest shadow-lg lg:right-[34%]">
+                <div className="absolute top-15 right-0 left-0 z-50 mt-2 overflow-hidden rounded-md border border-outline-variant bg-surface-container-lowest shadow-lg lg:right-[34%]">
                     {suggestions.map((location, index) => (
                         <button
                             key={`${location.lat}-${location.lon}-${index}`}
@@ -137,14 +130,11 @@ export default function SearchLocation() {
                             }}
                             className="flex min-h-16 w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-container focus:bg-surface-container"
                         >
-                            <MapPin
-                                className="mt-0.5 size-5 shrink-0 text-secondary"
-                            />
+                            <MapPin className="mt-0.5 size-5 shrink-0 text-secondary" />
 
                             <div className="min-w-0">
                                 <p className="truncate text-sm font-semibold text-on-surface">
-                                    {location.name ??
-                                        location.formatted}
+                                    {location.name ?? location.formatted}
                                 </p>
 
                                 <p className="mt-0.5 line-clamp-2 text-xs text-on-surface-variant">
@@ -156,13 +146,11 @@ export default function SearchLocation() {
                 </div>
             )}
 
-            {isFocused &&
-                isLoading &&
-                query.trim().length >= 2 && (
-                    <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-md border border-outline-variant bg-surface-container-lowest px-4 py-3 text-sm text-on-surface-variant shadow-lg lg:right-[34%]">
-                        Searching locations...
-                    </div>
-                )}
+            {isFocused && isLoading && query.trim().length >= 2 && (
+                <div className="absolute top-full right-0 left-0 z-50 mt-2 rounded-md border border-outline-variant bg-surface-container-lowest px-4 py-3 text-sm text-on-surface-variant shadow-lg lg:right-[34%]">
+                    Searching locations...
+                </div>
+            )}
         </div>
     );
 }

@@ -12,14 +12,12 @@ interface GeoapifyAutocompleteResponse {
 }
 
 export async function autocompleteLocation(
-    text: string
+    text: string,
 ): Promise<GeoapifyLocation[]> {
     const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
     if (!apiKey) {
-        throw new Error(
-            'VITE_GEOAPIFY_API_KEY is not defined.'
-        );
+        throw new Error('VITE_GEOAPIFY_API_KEY is not defined.');
     }
 
     const params = new URLSearchParams({
@@ -31,17 +29,14 @@ export async function autocompleteLocation(
     });
 
     const response = await fetch(
-        `https://api.geoapify.com/v1/geocode/autocomplete?${params.toString()}`
+        `https://api.geoapify.com/v1/geocode/autocomplete?${params.toString()}`,
     );
 
     if (!response.ok) {
-        throw new Error(
-            `Geoapify request failed: ${response.status}`
-        );
+        throw new Error(`Geoapify request failed: ${response.status}`);
     }
 
-    const data: GeoapifyAutocompleteResponse =
-        await response.json();
+    const data: GeoapifyAutocompleteResponse = await response.json();
 
     return data.results ?? [];
 }

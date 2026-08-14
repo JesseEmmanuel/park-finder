@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import "shadcn/tailwind.css";
+@import 'shadcn/tailwind.css';
 @import 'maplibre-gl/dist/maplibre-gl.css';
 @import 'tailwindcss';
 
@@ -147,14 +147,11 @@
        Shadows
        ============================== */
 
-    --shadow-floating:
-        0 4px 8px rgb(0 35 111 / 15%);
+    --shadow-floating: 0 4px 8px rgb(0 35 111 / 15%);
 
-    --shadow-card:
-        0 2px 8px rgb(18 28 42 / 8%);
+    --shadow-card: 0 2px 8px rgb(18 28 42 / 8%);
 
-    --shadow-search:
-        0 12px 24px rgb(18 28 42 / 12%);
+    --shadow-search: 0 12px 24px rgb(18 28 42 / 12%);
 }
 
 /*

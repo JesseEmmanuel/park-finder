@@ -3,8 +3,11 @@ import { createRoot } from 'react-dom/client';
 
 createInertiaApp({
     resolve: (name) => {
-        const pages = import.meta.glob('./pages/**/*.{jsx,tsx}', { eager: true });
-        const page = pages[`./pages/${name}.jsx`] || pages[`./pages/${name}.tsx`];
+        const pages = import.meta.glob('./pages/**/*.{jsx,tsx}', {
+            eager: true,
+        });
+        const page =
+            pages[`./pages/${name}.jsx`] || pages[`./pages/${name}.tsx`];
 
         if (!page) {
             throw new Error(`Page not found: ${name}`);
