@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('target_locations')) {
+        if (! Schema::hasTable('target_locations')) {
             $this->createTargetLocationTable();
         }
     }

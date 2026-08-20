@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\ParkingLocation;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<ParkingLocation>
  */
 class ParkingLocationFactory extends Factory
 {
@@ -19,7 +18,7 @@ class ParkingLocationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->streetName() . ' Parking',
+            'name' => fake()->streetName().' Parking',
             'description' => fake()->sentence(),
             'approximate_address' => fake()->address(),
             'latitude' => (string) fake()->latitude(),
@@ -27,7 +26,7 @@ class ParkingLocationFactory extends Factory
             'opening_time' => '08:00 AM',
             'closing_time' => '10:00 PM',
             'types' => fake()->randomElement(['LOT', 'STREET_SIDE', 'PAID_YARD', 'COMPOUND']),
-            'estimated_price' => fake()->numberBetween(20, 150) . ' PHP',
+            'estimated_price' => fake()->numberBetween(20, 150).' PHP',
             'source' => fake()->company(),
             'status' => 'APPROVED',
         ];

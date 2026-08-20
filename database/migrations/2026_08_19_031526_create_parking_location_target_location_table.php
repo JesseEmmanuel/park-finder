@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('parking_location_target_location')) {
+        if (! Schema::hasTable('parking_location_target_location')) {
             $this->createParkingLocationTargetLocationTable();
         }
     }
@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create('parking_location_target_location', function (Blueprint $table) {
             $table->uuid('parking_location_id');
             $table->uuid('target_location_id');
-            $table->string('target_distance'); //in meters
+            $table->string('target_distance'); // in meters
             $table->foreign('parking_location_id')->references('id')->on('parking_locations')->onDelete('cascade');
             $table->foreign('target_location_id')->references('id')->on('target_locations')->onDelete('cascade');
             $table->timestamps();

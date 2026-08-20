@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
 
-        if (!Schema::hasTable('parking_location_image')) {
+        if (! Schema::hasTable('parking_location_image')) {
             $this->createParkingLocationImageTable();
         }
     }

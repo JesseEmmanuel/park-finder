@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('parking_locations')) {
+        if (! Schema::hasTable('parking_locations')) {
             $this->createParkingLocationTable();
         }
     }

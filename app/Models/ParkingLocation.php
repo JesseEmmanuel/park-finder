@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\ParkingLocationFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ParkingLocation extends Model
 {
+    /** @use HasFactory<ParkingLocationFactory> */
     use HasFactory, HasUuids;
 
     protected $fillable = [
@@ -25,6 +27,9 @@ class ParkingLocation extends Model
         'status',
     ];
 
+    /**
+     * @return BelongsToMany<TargetLocation, $this>
+     */
     public function targetLocations(): BelongsToMany
     {
         return $this->belongsToMany(TargetLocation::class)

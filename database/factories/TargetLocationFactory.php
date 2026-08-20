@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\TargetLocation;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
- * @extends Factory<Model>
+ * @extends Factory<TargetLocation>
  */
 class TargetLocationFactory extends Factory
 {

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ParkingLocation;
+use App\Models\TargetLocation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\TargetLocation;
-use App\Models\ParkingLocation;
 
 class LocationSeeder extends Seeder
 {
@@ -29,9 +29,10 @@ class LocationSeeder extends Seeder
 
         // 2. Generate 10 nearby parking locations
         // 0.004 degrees is roughly 400-500 meters
+        /** @var Collection<int, ParkingLocation> $parkingLocations */
         $parkingLocations = ParkingLocation::factory()->count(10)->create([
-            'latitude' => fn() => (string) ($targetLat + fake()->randomFloat(6, -0.004, 0.004)),
-            'longitude' => fn() => (string) ($targetLng + fake()->randomFloat(6, -0.004, 0.004)),
+            'latitude' => fn () => (string) ($targetLat + fake()->randomFloat(6, -0.004, 0.004)),
+            'longitude' => fn () => (string) ($targetLng + fake()->randomFloat(6, -0.004, 0.004)),
         ]);
 
         // 3. Attach and calculate distance for the pivot table
@@ -52,7 +53,7 @@ class LocationSeeder extends Seeder
     /**
      * Haversine formula to calculate distance between two coordinates in meters
      */
-    private function calculateDistanceInMeters($lat1, $lon1, $lat2, $lon2): int
+    private function calculateDistanceInMeters(float $lat1, float $lon1, float $lat2, float $lon2): int
     {
         $earthRadius = 6371000; // Earth's radius in meters
 
