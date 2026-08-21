@@ -39,7 +39,7 @@ export default function ParkingSheet({
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent
                 side="bottom"
-                className="rounded-t-xl border border-white/30 bg-surface-container-lowest/75 p-0 text-on-surface shadow-2xl backdrop-blur-xl"
+                className="max-h-[65dvh] rounded-t-xl border border-white/30 bg-surface-container-lowest/75 p-0 text-on-surface shadow-2xl backdrop-blur-xl"
             >
                 <div className="mx-auto w-full max-w-3xl">
                     <SheetHeader className="relative border-b border-white/20 px-4 pt-5 pb-3">
@@ -92,7 +92,7 @@ export default function ParkingSheet({
                         </div>
 
                         {/* Results */}
-                        <div className="mt-5 max-h-[55vh] overflow-y-auto">
+                        <div className="mt-5 max-h-[40dvh] overflow-y-auto">
                             <div className="mb-3 flex items-center justify-between">
                                 <p className="text-label-bold text-on-surface-variant">
                                     {filteredParkingLots.length}{' '}

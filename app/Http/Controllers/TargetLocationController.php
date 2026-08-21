@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class ParkingLocationController extends Controller
+class TargetLocationController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {

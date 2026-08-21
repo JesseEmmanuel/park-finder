@@ -1,7 +1,6 @@
 import { router } from '@inertiajs/react';
-import { ArrowRight, Loader2, MapPin } from 'lucide-react';
+import { Loader2, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import {
     InputGroup,
     InputGroupAddon,
@@ -121,7 +120,7 @@ export default function SearchLocation() {
                             </InputGroupAddon>
                         )}
                     </InputGroup>
-
+                    {/* 
                     <Button
                         type="button"
                         onClick={handleSearch}
@@ -131,14 +130,14 @@ export default function SearchLocation() {
                     >
                         <ArrowRight className="size-5" />
                         <span className="sr-only">Search</span>
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
 
             {/* Suggestions Overlay Dropdown */}
             {isFocused && suggestions.length > 0 && (
-                <div className="border-border text-popover-foreground absolute top-full right-0 left-0 z-50 mt-1 max-h-[60vh] overflow-y-auto overscroll-contain rounded-2xl border bg-background/60 p-1 shadow-2xl backdrop-blur-md">
-                    <div className="divide-border/40 divide-y">
+                <div className="border-border text-popover-foreground absolute top-full right-0 left-0 z-50 mt-1 max-h-[40dvh] overflow-y-scroll overscroll-contain rounded-md border bg-background/60 p-1 shadow-2xl backdrop-blur-md lg:max-h-[30dvh]">
+                    <div>
                         {suggestions.map((location, index) => (
                             <button
                                 key={`${location.lat}-${location.lon}-${index}`}
@@ -149,7 +148,7 @@ export default function SearchLocation() {
                                 onClick={() => {
                                     handleSelect(location);
                                 }}
-                                className="group hover:bg-accent/60 active:bg-accent focus:bg-accent flex min-h-[56px] w-full items-start gap-3.5 rounded-xl px-3.5 py-3 text-left transition-colors focus:outline-none"
+                                className="group hover:bg-accent/60 active:bg-accent focus:bg-accent hover:bg-accent flex min-h-[56px] w-full cursor-pointer items-start gap-3.5 rounded-xl px-3.5 py-3 text-left transition-colors hover:text-primary focus:outline-none"
                             >
                                 <div className="bg-accent mt-0.5 rounded-full p-2 group-hover:bg-background group-hover:text-primary">
                                     <MapPin className="text-muted-foreground size-4 shrink-0 group-hover:text-primary" />
