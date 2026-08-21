@@ -113,7 +113,8 @@ export default function ParkingMap({
             map.remove();
             mapRef.current = null;
         };
-    }, [center, radius, zoom]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     /*
      * Update radius when the selected radius changes

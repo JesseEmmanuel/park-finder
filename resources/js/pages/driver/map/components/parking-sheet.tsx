@@ -39,11 +39,11 @@ export default function ParkingSheet({
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent
                 side="bottom"
-                className="rounded-t-xl border-t border-outline-variant bg-surface-container-lowest p-0 text-on-surface shadow-2xl"
+                className="rounded-t-xl border border-white/30 bg-surface-container-lowest/75 p-0 text-on-surface shadow-2xl backdrop-blur-xl"
             >
                 <div className="mx-auto w-full max-w-3xl">
-                    <SheetHeader className="relative px-4 pt-5 pb-2">
-                        <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-outline-variant" />
+                    <SheetHeader className="relative border-b border-white/20 px-4 pt-5 pb-3">
+                        <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-outline-variant/70" />
 
                         <SheetTitle className="text-headline-md text-primary">
                             Available parking
@@ -54,7 +54,7 @@ export default function ParkingSheet({
                                 type="button"
                                 variant="ghost"
                                 size="icon"
-                                className="absolute top-3 right-3 size-10 rounded-full text-on-surface-variant hover:bg-surface-container"
+                                className="absolute top-3 right-3 size-10 rounded-full text-on-surface-variant hover:bg-white/20"
                             >
                                 <span className="sr-only">
                                     Close parking results

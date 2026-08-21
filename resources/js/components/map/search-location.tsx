@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, Loader2, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -72,15 +72,25 @@ export default function SearchLocation() {
     };
 
     return (
-        <div className="relative w-full max-w-2xl">
-            <div className="flex w-full flex-col gap-2 rounded-md bg-white p-2 shadow-md">
-                <div className="flex gap-2 lg:flex-row">
-                    <InputGroup>
+        <div className="relative h-fit w-full">
+            {/* Search Input Bar */}
+            <div className="group ring-border relative w-full rounded-2xl bg-background/60 p-1.5 shadow-lg ring-1 shadow-black/5 backdrop-blur-md transition-all duration-200 focus-within:ring-2 focus-within:ring-primary">
+                <div className="flex w-full gap-2">
+                    <InputGroup className="border-0 bg-transparent shadow-none focus-within:ring-0">
+                        <InputGroupAddon align="inline-start" className="pl-3">
+                            <MapPin className="size-5 shrink-0 text-primary transition-colors group-focus-within:text-primary" />
+                        </InputGroupAddon>
+
                         <InputGroupInput
                             id="location"
                             value={query}
                             onChange={(event) => {
-                                setQuery(event.target.value);
+                                const value = event.target.value;
+                                setQuery(value);
+
+                                if (value.trim().length < 2) {
+                                    setSuggestions([]);
+                                }
                             }}
                             onFocus={() => {
                                 setIsFocused(true);
@@ -96,70 +106,88 @@ export default function SearchLocation() {
                                     setIsFocused(false);
                                 }
                             }}
-                            className="rounded-sm"
+                            className="placeholder:text-muted-foreground h-12 w-full border-0 bg-transparent text-base focus-visible:ring-0 sm:text-sm"
                             placeholder="Where are you going?"
                             autoComplete="off"
                         />
 
-                        <InputGroupAddon align="inline-start">
-                            <MapPin className="text-muted-foreground text-primary" />
-                        </InputGroupAddon>
+                        {/* Inline Loading Feedback */}
+                        {isLoading && (
+                            <InputGroupAddon
+                                align="inline-end"
+                                className="pr-3"
+                            >
+                                <Loader2 className="text-muted-foreground size-4 animate-spin" />
+                            </InputGroupAddon>
+                        )}
                     </InputGroup>
 
                     <Button
                         type="button"
                         onClick={handleSearch}
-                        className="w-[75px] rounded-md text-white"
-                        disabled={isLoading}
+                        size="icon"
+                        className="text-primary-foreground size-11 shrink-0 rounded-xl bg-primary shadow-sm transition-transform active:scale-95"
+                        disabled={isLoading || suggestions.length === 0}
                     >
-                        <ArrowRight className="text-white" />
+                        <ArrowRight className="size-5" />
+                        <span className="sr-only">Search</span>
                     </Button>
                 </div>
             </div>
 
+            {/* Suggestions Overlay Dropdown */}
             {isFocused && suggestions.length > 0 && (
-                <div className="absolute top-15 right-0 left-0 z-50 mt-2 overflow-hidden rounded-md border border-outline-variant bg-surface-container-lowest shadow-lg lg:right-[34%]">
-                    {suggestions.map((location, index) => (
-                        <button
-                            key={`${location.lat}-${location.lon}-${index}`}
-                            type="button"
-                            onMouseDown={(event) => {
-                                event.preventDefault();
-                            }}
-                            onClick={() => {
-                                handleSelect(location);
-                            }}
-                            className="flex min-h-16 w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-container focus:bg-surface-container"
-                        >
-                            <MapPin className="mt-0.5 size-5 shrink-0 text-secondary" />
-
-                            <div className="min-w-0">
-                                <div className="flex items-center gap-2">
-                                    <p className="truncate text-sm font-semibold text-on-surface">
-                                        {location.name}
-                                    </p>
-
-                                    {location.source === 'database' && (
-                                        <span className="shrink-0 rounded-sm bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                                            ParkFinder
-                                        </span>
-                                    )}
+                <div className="border-border text-popover-foreground absolute top-full right-0 left-0 z-50 mt-1 max-h-[60vh] overflow-y-auto overscroll-contain rounded-2xl border bg-background/60 p-1 shadow-2xl backdrop-blur-md">
+                    <div className="divide-border/40 divide-y">
+                        {suggestions.map((location, index) => (
+                            <button
+                                key={`${location.lat}-${location.lon}-${index}`}
+                                type="button"
+                                onMouseDown={(event) => {
+                                    event.preventDefault();
+                                }}
+                                onClick={() => {
+                                    handleSelect(location);
+                                }}
+                                className="group hover:bg-accent/60 active:bg-accent focus:bg-accent flex min-h-[56px] w-full items-start gap-3.5 rounded-xl px-3.5 py-3 text-left transition-colors focus:outline-none"
+                            >
+                                <div className="bg-accent mt-0.5 rounded-full p-2 group-hover:bg-background group-hover:text-primary">
+                                    <MapPin className="text-muted-foreground size-4 shrink-0 group-hover:text-primary" />
                                 </div>
 
-                                <p className="mt-0.5 line-clamp-2 text-xs text-on-surface-variant">
-                                    {location.formatted}
-                                </p>
-                            </div>
-                        </button>
-                    ))}
+                                <div className="min-w-0 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-foreground truncate text-sm font-semibold">
+                                            {location.name}
+                                        </p>
+
+                                        {location.source === 'database' && (
+                                            <span className="inline-flex shrink-0 items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary ring-1 ring-primary/20 ring-inset">
+                                                ParkFinder
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
+                                        {location.formatted}
+                                    </p>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
 
-            {isFocused && isLoading && query.trim().length >= 2 && (
-                <div className="absolute top-full right-0 left-0 z-50 mt-2 rounded-md border border-outline-variant bg-surface-container-lowest px-4 py-3 text-sm text-on-surface-variant shadow-lg lg:right-[34%]">
-                    Searching locations...
-                </div>
-            )}
+            {/* Loading Indicator Fallback overlay */}
+            {isFocused &&
+                isLoading &&
+                query.trim().length >= 2 &&
+                suggestions.length === 0 && (
+                    <div className="border-border text-muted-foreground absolute top-full right-0 left-0 z-50 mt-1 flex items-center justify-center gap-2.5 rounded-2xl border bg-background/60 px-4 py-4 text-sm shadow-xl backdrop-blur-md">
+                        <Loader2 className="size-4 animate-spin text-primary" />
+                        <span>Searching locations...</span>
+                    </div>
+                )}
         </div>
     );
 }

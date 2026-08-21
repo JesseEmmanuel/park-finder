@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LocationSearchController;
+use App\Http\Controllers\ParkingLocationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,5 +17,5 @@ Route::get('/admin', function () {
     return Inertia::render('admin/login/page');
 })->name('admin.index');
 
-Route::get('/location-search', LocationSearchController::class)
+Route::get('/location-search', ParkingLocationController::class)
     ->name('location.search');
