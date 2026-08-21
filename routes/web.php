@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationSearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,8 +11,11 @@ Route::get('/', function () {
 
 Route::get('/driver/map', function () {
     return Inertia::render('driver/map/page');
-})->name('driver.index');
+})->name('driver.map');
 
 Route::get('/admin', function () {
     return Inertia::render('admin/login/page');
 })->name('admin.index');
+
+Route::get('/location-search', LocationSearchController::class)
+    ->name('location.search');

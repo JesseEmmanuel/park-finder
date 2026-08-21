@@ -7,12 +7,13 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from '@/components/ui/input-group';
-import { autocompleteLocation } from '@/lib/geoapify';
-import type { GeoapifyLocation } from '@/lib/geoapify';
+
+import { searchLocations } from '@/lib/location-search';
+import type { LocationSuggestion } from '@/types/location';
 
 export default function SearchLocation() {
     const [query, setQuery] = useState('');
-    const [suggestions, setSuggestions] = useState<GeoapifyLocation[]>([]);
+    const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
@@ -33,7 +34,7 @@ export default function SearchLocation() {
             try {
                 setIsLoading(true);
 
-                const results = await autocompleteLocation(trimmedQuery);
+                const results = await searchLocations(trimmedQuery);
 
                 setSuggestions(results);
             } catch (error) {
@@ -43,7 +44,7 @@ export default function SearchLocation() {
             } finally {
                 setIsLoading(false);
             }
-        }, 300);
+        }, 500);
 
         return () => {
             if (searchTimeout.current) {
@@ -52,7 +53,7 @@ export default function SearchLocation() {
         };
     }, [query]);
 
-    const handleSelect = (location: GeoapifyLocation) => {
+    const handleSelect = (location: LocationSuggestion) => {
         setQuery(location.formatted);
         setSuggestions([]);
         setIsFocused(false);
@@ -133,9 +134,17 @@ export default function SearchLocation() {
                             <MapPin className="mt-0.5 size-5 shrink-0 text-secondary" />
 
                             <div className="min-w-0">
-                                <p className="truncate text-sm font-semibold text-on-surface">
-                                    {location.name ?? location.formatted}
-                                </p>
+                                <div className="flex items-center gap-2">
+                                    <p className="truncate text-sm font-semibold text-on-surface">
+                                        {location.name}
+                                    </p>
+
+                                    {location.source === 'database' && (
+                                        <span className="shrink-0 rounded-sm bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                                            ParkFinder
+                                        </span>
+                                    )}
+                                </div>
 
                                 <p className="mt-0.5 line-clamp-2 text-xs text-on-surface-variant">
                                     {location.formatted}
