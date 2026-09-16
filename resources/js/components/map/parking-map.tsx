@@ -1,9 +1,15 @@
 import { circle } from '@turf/circle';
-import { Map, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
+import {
+    Map,
+    Marker,
+    NavigationControl,
+    setWorkerUrl,
+    Popup,
+} from 'maplibre-gl';
 import type { MapOptions, GeoJSONSource } from 'maplibre-gl';
-
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { useEffect, useRef } from 'react';
+import type { ParkingLocation } from '@/types/location';
 
 setWorkerUrl(workerUrl);
 
@@ -12,6 +18,7 @@ interface ParkingMapProps {
     zoom?: number;
     radius?: number;
     className?: string;
+    parkingLots?: ParkingLocation[];
 }
 
 const RADIUS_SOURCE_ID = 'search-radius';
@@ -23,6 +30,7 @@ export default function ParkingMap({
     zoom = 5,
     radius = 500,
     className = '',
+    parkingLots = [],
 }: ParkingMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
@@ -54,9 +62,6 @@ export default function ParkingMap({
         map.addControl(new NavigationControl(), 'bottom-right');
 
         map.on('load', () => {
-            /*
-             * Destination marker
-             */
             const marker = new Marker({
                 color: '#1e3a8a',
             })
@@ -64,10 +69,6 @@ export default function ParkingMap({
                 .addTo(map);
 
             markerRef.current = marker;
-
-            /*
-             * Radius circle
-             */
             const radiusCircle = circle(center, radius, {
                 steps: 64,
                 units: 'meters',
@@ -113,12 +114,8 @@ export default function ParkingMap({
             map.remove();
             mapRef.current = null;
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
-    /*
-     * Update radius when the selected radius changes
-     */
     useEffect(() => {
         const map = mapRef.current;
 
@@ -147,6 +144,53 @@ export default function ParkingMap({
             map.once('load', updateRadius);
         }
     }, [center, radius]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+
+        if (!map || !parkingLots) {
+            return;
+        }
+
+        const currentMarkers: Marker[] = [];
+        parkingLots.forEach((spot) => {
+            const lng = Number(spot.longitude);
+            const lat = Number(spot.latitude);
+
+            if (Number.isFinite(lng) && Number.isFinite(lat)) {
+                const popup = new Popup({
+                    offset: 25,
+                    closeButton: false,
+                    closeOnClick: false,
+                }).setHTML(
+                    `<div class="p-2 min-w-37.5">
+                        <h4 class="font-bold text-sm text-gray-900">${spot.name}</h4>
+                        <p class="text-xs text-gray-600 mt-0.5">${spot.approximate_address}</p>
+                        <p class="text-xs font-semibold text-blue-600 mt-1.5">${spot.distance}m away</p>
+                    </div>`,
+                );
+                const marker = new Marker({ color: '#2563eb' })
+                    .setLngLat([lng, lat])
+                    .addTo(map);
+                const markerElement = marker.getElement();
+                markerElement.style.cursor = 'pointer';
+                markerElement.addEventListener('mouseenter', () => {
+                    popup.setLngLat([lng, lat]).addTo(map);
+                });
+                markerElement.addEventListener('mouseleave', () => {
+                    popup.remove();
+                });
+
+                currentMarkers.push(marker);
+            }
+        });
+
+        return () => {
+            currentMarkers.forEach((marker) => marker.remove());
+        };
+    }, [parkingLots]);
+
+    console.log('parking-lots from parking-map:', parkingLots);
 
     return (
         <div ref={mapContainerRef} className={`h-full w-full ${className}`} />

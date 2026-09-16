@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/react';
 import { MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,14 +8,14 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
-import type { MockParkingLot } from '@/data/mock-parking';
+import type { ParkingLocation } from '@/types/location';
 
 interface ParkingSheetProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     radius: number;
     onRadiusChange: (radius: number) => void;
-    parkingLots: MockParkingLot[];
+    parkingLots: ParkingLocation[];
 }
 
 const radiusOptions = [
@@ -31,10 +32,6 @@ export default function ParkingSheet({
     onRadiusChange,
     parkingLots,
 }: ParkingSheetProps) {
-    const filteredParkingLots = parkingLots
-        .filter((parkingLot) => parkingLot.distance <= radius)
-        .sort((a, b) => a.distance - b.distance);
-
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent
@@ -76,9 +73,24 @@ export default function ParkingSheet({
                                         variant={
                                             selected ? 'default' : 'outline'
                                         }
-                                        onClick={() =>
-                                            onRadiusChange(option.value)
-                                        }
+                                        onClick={() => {
+                                            onRadiusChange(option.value);
+                                            const params = new URLSearchParams(
+                                                window.location.search,
+                                            );
+                                            params.set(
+                                                'radius',
+                                                String(option.value),
+                                            );
+                                            router.get(
+                                                `/driver/map?${params.toString()}`,
+                                                {},
+                                                {
+                                                    preserveState: true,
+                                                    preserveScroll: true,
+                                                },
+                                            );
+                                        }}
                                         className={
                                             selected
                                                 ? 'min-h-12 rounded-md bg-primary text-on-primary'
@@ -95,8 +107,8 @@ export default function ParkingSheet({
                         <div className="mt-5 max-h-[40dvh] overflow-y-auto">
                             <div className="mb-3 flex items-center justify-between">
                                 <p className="text-label-bold text-on-surface-variant">
-                                    {filteredParkingLots.length}{' '}
-                                    {filteredParkingLots.length === 1
+                                    {parkingLots.length}{' '}
+                                    {parkingLots.length === 1
                                         ? 'location'
                                         : 'locations'}{' '}
                                     found
@@ -111,8 +123,8 @@ export default function ParkingSheet({
                             </div>
 
                             <div className="space-y-3">
-                                {filteredParkingLots.length > 0 ? (
-                                    filteredParkingLots.map((parkingLot) => (
+                                {parkingLots.length > 0 ? (
+                                    parkingLots.map((parkingLot) => (
                                         <button
                                             key={parkingLot.id}
                                             type="button"
@@ -125,7 +137,9 @@ export default function ParkingSheet({
                                                     </h3>
 
                                                     <p className="mt-1 text-body-md text-on-surface-variant">
-                                                        {parkingLot.address}
+                                                        {
+                                                            parkingLot.approximate_address
+                                                        }
                                                     </p>
                                                 </div>
 
@@ -135,7 +149,9 @@ export default function ParkingSheet({
                                                     </p>
 
                                                     <p className="mt-1 text-label-sm text-on-surface-variant">
-                                                        {parkingLot.price}
+                                                        {
+                                                            parkingLot.estimated_price
+                                                        }
                                                     </p>
                                                 </div>
                                             </div>
@@ -143,19 +159,19 @@ export default function ParkingSheet({
                                             <div className="mt-3 flex items-center gap-2">
                                                 <MapPin className="size-4 text-secondary" />
 
-                                                <span
+                                                {/* <span
                                                     className={
                                                         parkingLot.status ===
-                                                        'recent'
+                                                            'recent'
                                                             ? 'rounded-full bg-parking-blue-light px-2.5 py-1 text-label-sm text-parking-reported-text'
                                                             : 'rounded-full bg-parking-historical-bg px-2.5 py-1 text-label-sm text-parking-historical-text'
                                                     }
                                                 >
                                                     {parkingLot.status ===
-                                                    'recent'
+                                                        'recent'
                                                         ? 'Recently Reported'
                                                         : 'Historical Spot'}
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </button>
                                     ))

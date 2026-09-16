@@ -5,18 +5,26 @@ import { useState } from 'react';
 import ParkingMap from '@/components/map/parking-map';
 import SearchLocation from '@/components/map/search-location';
 import { Button } from '@/components/ui/button';
-import { mockParkingLots } from '@/data/mock-parking';
+import type { ParkingLocation } from '@/types/location';
 import ParkingSheet from './components/parking-sheet';
+interface PageProps {
+    parkingLots: ParkingLocation[];
+}
 
-export default function Page() {
+export default function Page({ parkingLots }: PageProps) {
+    console.log('pariking lots from page:', parkingLots);
     const [sheetOpen, setSheetOpen] = useState(false);
-    const [radius, setRadius] = useState(500);
 
     const params = new URLSearchParams(window.location.search);
 
     const lat = Number(params.get('lat'));
     const lon = Number(params.get('lon'));
     const zoom = Number(params.get('zoom'));
+    const radiusParam = Number(params.get('radius'));
+
+    const [radius, setRadius] = useState(
+        Number.isFinite(radiusParam) ? radiusParam : 500,
+    );
 
     const hasLocation = Number.isFinite(lat) && Number.isFinite(lon);
 
@@ -32,7 +40,12 @@ export default function Page() {
 
     return (
         <div className="relative h-screen w-full overflow-hidden">
-            <ParkingMap center={center} zoom={mapZoom} radius={radius} />
+            <ParkingMap
+                center={center}
+                zoom={mapZoom}
+                radius={radius}
+                parkingLots={parkingLots}
+            />
 
             {/* Floating search */}
             <div className="absolute top-6 right-4 left-4 z-20 flex justify-center">
@@ -68,7 +81,7 @@ export default function Page() {
                 onOpenChange={setSheetOpen}
                 radius={radius}
                 onRadiusChange={setRadius}
-                parkingLots={mockParkingLots}
+                parkingLots={parkingLots}
             />
         </div>
     );
