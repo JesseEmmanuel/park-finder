@@ -114,7 +114,7 @@ export default function ParkingMap({
             map.remove();
             mapRef.current = null;
         };
-    });
+    }, []);
 
     useEffect(() => {
         const map = mapRef.current;
