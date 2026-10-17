@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="No photo available">
+  <rect width="640" height="360" fill="#eef1f6"/>
+  <rect y="250" width="640" height="110" fill="#dfe4ec"/>
+  <g fill="#cfd6e1">
+    <rect x="60" y="120" width="70" height="130"/>
+    <rect x="140" y="150" width="50" height="100"/>
+    <circle cx="480" cy="190" r="45"/>
+    <circle cx="540" cy="200" r="38"/>
+    <rect x="474" y="215" width="10" height="40"/>
+    <rect x="536" y="220" width="8" height="35"/>
+  </g>
+  <g stroke="#ffffff" stroke-width="4" stroke-dasharray="24 16">
+    <line x1="0" y1="305" x2="640" y2="305"/>
+  </g>
+  <rect x="404" y="80" width="6" height="170" fill="#9aa5b8"/>
+  <rect x="380" y="60" width="54" height="54" rx="8" fill="#9aa5b8"/>
+  <text x="407" y="102" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">P</text>
+  <text x="320" y="340" font-family="Inter, Arial, sans-serif" font-size="16" fill="#8892a4" text-anchor="middle">No photos yet</text>
+</svg>

@@ -6,6 +6,7 @@ import ParkingMap from '@/components/map/parking-map';
 import SearchLocation from '@/components/map/search-location';
 import { Button } from '@/components/ui/button';
 import type { ParkingLocation } from '@/types/location';
+import ParkingDetailModal from './components/parking-detail-modal';
 import ParkingSheet from './components/parking-sheet';
 interface PageProps {
     parkingLots: ParkingLocation[];
@@ -14,6 +15,29 @@ interface PageProps {
 export default function Page({ parkingLots }: PageProps) {
     console.log('pariking lots from page:', parkingLots);
     const [sheetOpen, setSheetOpen] = useState(false);
+    const [selectedParkingLot, setSelectedParkingLot] =
+        useState<ParkingLocation | null>(null);
+    // Kept separate from the selection so the modal keeps its content
+    // while the close animation plays.
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [focusTarget, setFocusTarget] = useState<{
+        lng: number;
+        lat: number;
+    } | null>(null);
+
+    const handleParkingLotSelect = (parkingLot: ParkingLocation) => {
+        setSelectedParkingLot(parkingLot);
+        setDetailOpen(true);
+    };
+
+    const handleViewOnMap = (parkingLot: ParkingLocation) => {
+        setDetailOpen(false);
+        setSheetOpen(false);
+        setFocusTarget({
+            lng: Number(parkingLot.longitude),
+            lat: Number(parkingLot.latitude),
+        });
+    };
 
     const params = new URLSearchParams(window.location.search);
 
@@ -45,6 +69,8 @@ export default function Page({ parkingLots }: PageProps) {
                 zoom={mapZoom}
                 radius={radius}
                 parkingLots={parkingLots}
+                onParkingLotSelect={handleParkingLotSelect}
+                focusTarget={focusTarget}
             />
 
             {/* Floating search */}
@@ -82,6 +108,14 @@ export default function Page({ parkingLots }: PageProps) {
                 radius={radius}
                 onRadiusChange={setRadius}
                 parkingLots={parkingLots}
+                onParkingLotSelect={handleParkingLotSelect}
+            />
+
+            <ParkingDetailModal
+                parkingLot={selectedParkingLot}
+                open={detailOpen}
+                onOpenChange={setDetailOpen}
+                onViewOnMap={handleViewOnMap}
             />
         </div>
     );

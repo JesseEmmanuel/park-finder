@@ -17,6 +17,10 @@ Route::get('/', function () {
 Route::get('/driver/map', [ParkingLocationController::class, 'index'])
     ->name('driver.map');
 
+Route::get('/parking-locations/{id}', [ParkingLocationController::class, 'show'])
+    ->whereUuid('id')
+    ->name('parking-locations.show');
+
 Route::get('/admin', function () {
     return Inertia::render('admin/login/page');
 })->name('admin.index');
