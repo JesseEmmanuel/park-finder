@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
 
-        if (! Schema::hasTable('parking_location_image')) {
+        if (! Schema::hasTable('parking_location_images')) {
             $this->createParkingLocationImageTable();
         }
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('parking_location_image');
+        Schema::dropIfExists('parking_location_images');
     }
 };

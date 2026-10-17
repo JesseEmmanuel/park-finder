@@ -16,6 +16,7 @@ interface ParkingSheetProps {
     radius: number;
     onRadiusChange: (radius: number) => void;
     parkingLots: ParkingLocation[];
+    onParkingLotSelect: (parkingLot: ParkingLocation) => void;
 }
 
 const radiusOptions = [
@@ -31,6 +32,7 @@ export default function ParkingSheet({
     radius,
     onRadiusChange,
     parkingLots,
+    onParkingLotSelect,
 }: ParkingSheetProps) {
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
@@ -128,6 +130,9 @@ export default function ParkingSheet({
                                         <button
                                             key={parkingLot.id}
                                             type="button"
+                                            onClick={() =>
+                                                onParkingLotSelect(parkingLot)
+                                            }
                                             className="w-full rounded-md border border-outline-variant bg-surface-container-lowest p-4 text-left transition-colors hover:bg-surface-container focus-visible:bg-surface-container"
                                         >
                                             <div className="flex items-start justify-between gap-4">

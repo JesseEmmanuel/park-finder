@@ -20,3 +20,27 @@ export type ParkingLocation = {
     estimated_price: string;
     distance: number;
 };
+
+export type ParkingLocationType =
+    'LOT' | 'STREET_SIDE' | 'PAID_YARD' | 'COMPOUND';
+
+export type ParkingLocationImage = {
+    id: string;
+    url: string;
+};
+
+export type ParkingLocationDetails = {
+    id: string;
+    name: string;
+    description: string;
+    approximate_address: string;
+    latitude: number;
+    longitude: number;
+    opening_time: string;
+    closing_time: string;
+    types: ParkingLocationType;
+    estimated_price: string;
+    source: string;
+    updated_at: string | null;
+    images: ParkingLocationImage[];
+};

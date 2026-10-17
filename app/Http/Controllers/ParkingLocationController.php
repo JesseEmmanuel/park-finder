@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ParkingLocation;
+use App\Models\ParkingLocationImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -25,6 +27,7 @@ class ParkingLocationController extends Controller
 
             $haversineSql = "(? * acos(cos(radians(?::double precision)) * cos(radians(latitude::double precision)) * cos(radians(longitude::double precision) - radians(?::double precision)) + sin(radians(?::double precision)) * sin(radians(latitude::double precision))))";
             $baseQuery = ParkingLocation::query()
+                ->approved()
                 ->select('parking_locations.*')
                 ->selectRaw("{$haversineSql} AS distance", [
                     $earthRadius,
@@ -68,9 +71,35 @@ class ParkingLocationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
-        //
+        $parkingLocation = ParkingLocation::query()
+            ->approved()
+            ->with('images')
+            ->findOrFail($id);
+
+        return response()->json([
+            'data' => [
+                'id' => $parkingLocation->id,
+                'name' => $parkingLocation->name,
+                'description' => $parkingLocation->description,
+                'approximate_address' => $parkingLocation->approximate_address,
+                'latitude' => (float) $parkingLocation->latitude,
+                'longitude' => (float) $parkingLocation->longitude,
+                'opening_time' => $parkingLocation->opening_time,
+                'closing_time' => $parkingLocation->closing_time,
+                'types' => $parkingLocation->types,
+                'estimated_price' => $parkingLocation->estimated_price,
+                'source' => $parkingLocation->source,
+                'updated_at' => $parkingLocation->updated_at?->toIso8601String(),
+                'images' => $parkingLocation->images
+                    ->map(fn (ParkingLocationImage $image) => [
+                        'id' => $image->id,
+                        'url' => $image->url(),
+                    ])
+                    ->values(),
+            ],
+        ]);
     }
 
     /**

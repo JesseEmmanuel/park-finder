@@ -19,6 +19,9 @@ interface ParkingMapProps {
     radius?: number;
     className?: string;
     parkingLots?: ParkingLocation[];
+    onParkingLotSelect?: (parkingLot: ParkingLocation) => void;
+    /** A new object reference re-centres the map, even on the same spot. */
+    focusTarget?: { lng: number; lat: number } | null;
 }
 
 const RADIUS_SOURCE_ID = 'search-radius';
@@ -31,10 +34,17 @@ export default function ParkingMap({
     radius = 500,
     className = '',
     parkingLots = [],
+    onParkingLotSelect,
+    focusTarget = null,
 }: ParkingMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<Map | null>(null);
     const markerRef = useRef<Marker | null>(null);
+    const onParkingLotSelectRef = useRef(onParkingLotSelect);
+
+    useEffect(() => {
+        onParkingLotSelectRef.current = onParkingLotSelect;
+    }, [onParkingLotSelect]);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) {
@@ -180,6 +190,11 @@ export default function ParkingMap({
                 markerElement.addEventListener('mouseleave', () => {
                     popup.remove();
                 });
+                markerElement.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    popup.remove();
+                    onParkingLotSelectRef.current?.(spot);
+                });
 
                 currentMarkers.push(marker);
             }
@@ -189,6 +204,26 @@ export default function ParkingMap({
             currentMarkers.forEach((marker) => marker.remove());
         };
     }, [parkingLots]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+
+        if (!map || !focusTarget) {
+            return;
+        }
+
+        const { lng, lat } = focusTarget;
+
+        if (!Number.isFinite(lng) || !Number.isFinite(lat)) {
+            return;
+        }
+
+        map.flyTo({
+            center: [lng, lat],
+            zoom: Math.max(map.getZoom(), 17),
+            essential: true,
+        });
+    }, [focusTarget]);
 
     console.log('parking-lots from parking-map:', parkingLots);
 
